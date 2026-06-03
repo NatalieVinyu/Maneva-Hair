@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Artist1 from '../assets/Artist1.jpeg'
+import Artist2 from '../assets/Artist2.jpeg'
+import Artist3 from '../assets/Artist3.jpeg'
 import Model1 from '../assets/Model1.jpeg'
 import Model2 from '../assets/Model2.jpeg'
 import Model3 from '../assets/Model3.jpeg'
@@ -100,9 +103,9 @@ function Gallery() {
 
         <div className="grid gap-6 sm:grid-cols-3">
           {[
-            { name: 'Aisha Dlamini', role: 'Lead Installer', speciality: 'Lace installs & customisation', img: Model1 },
-            { name: 'Lerato Khumalo', role: 'Senior Stylist', speciality: 'Curl sets & colour work', img: Model2 },
-            { name: 'Nandi Zulu', role: 'Colour Specialist', speciality: 'Toning, balayage & tinting', img: Model3 },
+            { name: 'Aisha Dlamini', role: 'Lead Installer', speciality: 'Lace installs & customisation', img: Artist1 },
+            { name: 'Lerato Khumalo', role: 'Senior Stylist', speciality: 'Curl sets & colour work', img: Artist2 },
+            { name: 'Nandi Zulu', role: 'Colour Specialist', speciality: 'Toning, balayage & tinting', img: Artist3 },
           ].map((stylist) => (
             <div key={stylist.name} className="group text-center">
               <div className="relative mx-auto mb-4 h-40 w-40 overflow-hidden rounded-full">

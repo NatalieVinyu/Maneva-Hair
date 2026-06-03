@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import wigModel from '../assets/wigModel.jpg'
 import backgroundImage from '../assets/background.jpg'
 import straightBlonde from '../assets/StraightBlonde.jpeg'
