@@ -5,11 +5,16 @@ function ScrollToTop() {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    })
+    const smoothPages = ['/', '/about', '/gallery']
+
+    if (smoothPages.includes(pathname)) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    } else {
+      window.scrollTo(0, 0)
+    }
   }, [pathname])
 
   return null
