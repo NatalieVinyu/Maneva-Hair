@@ -1,5 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import wigModel2 from '../assets/wigModel2.jpg'
+import wigModel3 from '../assets/wigModel3.jpg'
+import backgroundImage from '../assets/background.jpg'
 
 function About() {
   return (
@@ -11,7 +14,7 @@ function About() {
         <div
           className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&q=70')",
+            backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             mixBlendMode: 'luminosity',
@@ -67,7 +70,7 @@ function About() {
 
         <div className="relative">
           <img
-            src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&q=80"
+            src={wigModel2}
             alt="Wig styling at Maneva Hair"
             className="w-full rounded-sm object-cover"
           />
@@ -221,7 +224,7 @@ function About() {
 
         <div className="relative overflow-hidden rounded-sm">
           <img
-            src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=700&q=80"
+            src={wigModel3}
             alt="Maneva Hair studio"
             className="w-full object-cover"
           />

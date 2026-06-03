@@ -1,5 +1,38 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import wigModel from '../assets/wigModel.jpg'
+import backgroundImage from '../assets/background.jpg'
+import straightBlonde from '../assets/StraightBlonde.jpeg'
+import WavyBrownWig from '../assets/WavyBrownWig.jpeg'
+import CurlyWaterWeave from '../assets/CurlyWaterWeave.jpeg'
+import StraightChocolateBrown from '../assets/StraightChocolateBrown.jpeg'
+import WavyGluelessWig from '../assets/WavyGluelessWig.jpeg'
+import CurlyAfroKinky from '../assets/CurlyAfroKinky.jpeg'
+import CurlyBlackHairLaceFrontWig from '../assets/CurlyBlackHairLaceFrontWig.jpeg'
+import StraightFringeBlendWig from '../assets/StraightFringeBlendWig.jpeg'
+import StraightShoulderLength from '../assets/StraightShoulderLength.jpeg'
+import WavyShoulderLengthWig from '../assets/WavyShoulderLengthWig.jpeg'
+import WavyWig from '../assets/WavyWig.jpeg'
+
+const ALL_WIGS = [
+  { id: 1, name: 'Silky Straight Blonde', price: 1299, category: 'Straight', length: '18"', img: straightBlonde, badge: 'Bestseller' },
+  { id: 2, name: 'Body Wave Brown', price: 1499, category: 'Wavy', length: '20"', img: WavyBrownWig, badge: 'New' },
+  { id: 3, name: 'Deep Curl', price: 1599, category: 'Curly', length: '16"', img: CurlyWaterWeave, badge: null },
+  { id: 4, name: 'Bone Straight', price: 1199, category: 'Straight', length: '22"', img: StraightChocolateBrown, badge: null },
+  { id: 5, name: 'Loose Wave', price: 1349, category: 'Wavy', length: '18"', img: WavyGluelessWig, badge: 'New' },
+  { id: 6, name: 'Afro Kinky', price: 1649, category: 'Curly', length: '14"', img: CurlyAfroKinky, badge: null },
+  { id: 7, name: 'Curly Black', price: 1449, category: 'Curly', length: '20"', img: CurlyBlackHairLaceFrontWig, badge: 'Bestseller' },
+  { id: 8, name: 'Fringe Wig', price: 1549, category: 'Straight', length: '18"', img: StraightFringeBlendWig, badge: null },
+  { id: 9, name: 'Straight Shoulder Wig', price: 1549, category: 'Straight', length: '18"', img: StraightShoulderLength, badge: null },
+  { id: 10, name: 'Wavy Shoulder Wig', price: 1549, category: 'Wavy', length: '18"', img: WavyShoulderLengthWig, badge: null },
+  { id: 11, name: 'Wavy Wig', price: 1549, category: 'Wavy', length: '18"', img: WavyWig, badge: null },
+]
+ 
+// Show badged wigs first, then fill up to 4
+const FEATURED_WIGS = [
+  ...ALL_WIGS.filter((w) => w.badge),
+  ...ALL_WIGS.filter((w) => !w.badge),
+].slice(0, 4)
 
 function Home() {
   return (
@@ -11,14 +44,14 @@ function Home() {
         <div
           className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&q=70')",
+            backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             mixBlendMode: 'luminosity',
           }}
         />
 
-        <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-16 px-6 py-28 md:flex-row md:items-center">
+        <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-16 px-6 py-16 md:flex-row md:items-center">
 
           {/* LEFT */}
           <div className="flex-1">
@@ -79,7 +112,7 @@ function Home() {
           {/* RIGHT — IMAGE */}
           <div className="relative flex-1">
             <img
-              src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&q=80"
+              src={wigModel}
               alt="Luxury wig model"
               className="w-full max-w-lg rounded-sm object-cover md:ml-auto"
             />
@@ -136,9 +169,8 @@ function Home() {
 
       {/* FEATURED WIGS SECTION */}
       <section className="mx-auto max-w-7xl px-6 py-24">
-
+ 
         <div className="mb-12 flex items-end justify-between">
-
           <div>
             <span className="mb-3 inline-block rounded-full bg-pink-50 px-4 py-1 text-xs font-medium uppercase tracking-widest text-pink-600">
               New Arrivals
@@ -147,52 +179,53 @@ function Home() {
               Shop our <span className="italic text-pink-600">latest</span> wigs
             </h2>
           </div>
-
           <Link
             to="/shop"
             className="hidden text-sm font-medium text-gray-500 underline underline-offset-4 hover:text-gray-900 md:block"
           >
             View all →
           </Link>
-
         </div>
-
+ 
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
-
-          {[
-            { name: 'Silky Straight', price: 'R1,299', img: 'photo-1522335789203-aabd1fc54bc9' },
-            { name: 'Body Wave', price: 'R1,499', img: 'photo-1519699047748-de8e457a634e' },
-            { name: 'Deep Curl', price: 'R1,599', img: 'photo-1487412720507-e7ab37603c6f' },
-            { name: 'Bone Straight', price: 'R1,199', img: 'photo-1531746020798-e6953c6e8e04' },
-          ].map((wig) => (
-            <div key={wig.name} className="group cursor-pointer">
-
-              <div className="overflow-hidden rounded-sm bg-gray-100 aspect-[3/4]">
+          {FEATURED_WIGS.map((wig) => (
+            <div key={wig.id} className="group cursor-pointer">
+ 
+              <div className="relative overflow-hidden rounded-sm bg-gray-100 aspect-[3/4]">
                 <img
-                  src={`https://images.unsplash.com/${wig.img}?w=400&q=80`}
+                  src={wig.img}
                   alt={wig.name}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+                {wig.badge && (
+                  <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-medium ${
+                    wig.badge === 'New' ? 'bg-pink-600 text-white' : 'bg-[#1a1218] text-white'
+                  }`}>
+                    {wig.badge}
+                  </span>
+                )}
               </div>
-
+ 
               <div className="mt-3 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-900">{wig.name}</p>
-                  <p className="mt-0.5 text-sm text-gray-500">{wig.price}</p>
+                  <p className="mt-0.5 text-xs text-gray-400">{wig.category} · {wig.length}</p>
                 </div>
-                <Link
-                  to="/shop"
-                  className="rounded-full border border-gray-200 px-4 py-1.5 text-xs hover:border-black hover:bg-black hover:text-white transition-colors"
-                >
-                  View
-                </Link>
+                <div className="flex items-center gap-3">
+                  <p className="text-sm font-medium text-gray-900">R{wig.price.toLocaleString()}</p>
+                  <Link
+                    to="/shop"
+                    className="rounded-full border border-gray-200 px-4 py-1.5 text-xs hover:border-black hover:bg-black hover:text-white transition-colors"
+                  >
+                    View
+                  </Link>
+                </div>
               </div>
-
+ 
             </div>
           ))}
-
         </div>
-
+ 
         <div className="mt-10 text-center md:hidden">
           <Link
             to="/shop"
@@ -201,7 +234,7 @@ function Home() {
             View All Wigs
           </Link>
         </div>
-
+ 
       </section>
 
       {/* HOW IT WORKS SECTION */}
