@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { supabase } from '../lib/supabase'
 
 const SERVICES = [
   { category: 'Installation', items: ['Lace Front Install — R450', 'Full Lace Install — R650', 'Glueless Install — R350'] },
@@ -15,6 +16,8 @@ const STEPS = ['Service', 'Date & Time', 'Your Details', 'Confirm']
 function Booking() {
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const [form, setForm] = useState({
     service: '',
@@ -59,9 +62,59 @@ function Booking() {
 
   const back = () => setStep((s) => s - 1)
 
-  const submit = () => {
-    setSubmitted(true)
+  const submit = async () => {
+    setLoading(true)
+    setSubmitError('')
+
+    try {
+      // 1 — Save booking to Supabase
+      const { error: dbError } = await supabase.from('bookings').insert([
+        {
+          service: form.service.split(' — ')[0],
+          stylist: form.stylist,
+          date: form.date,
+          time: form.time,
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          notes: form.notes,
+        },
+      ])
+ 
+      if (dbError) throw dbError
+ 
+      // 2 — Trigger email via Supabase Edge Function
+      const { error: fnError } = await supabase.functions.invoke('send-booking-email', {
+        body: {
+          to: form.email,
+          name: form.name,
+          service: form.service.split(' — ')[0],
+          price: form.service.split(' — ')[1],
+          stylist: form.stylist,
+          date: form.date,
+          time: form.time,
+          notes: form.notes,
+        },
+      })
+ 
+      // Email errors are non-blocking — booking still succeeded
+      if (fnError) console.warn('Email send failed:', fnError.message)
+ 
+      setSubmitted(true)
+      } catch (err) {
+        setSubmitError('Something went wrong. Please try again.')
+        console.error(err)
+      } finally {
+       setLoading(false)
+      }
   }
+ 
+  const reset = () => {
+    setSubmitted(false)
+    setStep(0)
+    setForm({ service: '', stylist: 'No preference', date: '', time: '', name: '', phone: '', email: '', notes: '' })
+  }
+  
 
   // Get today's date in YYYY-MM-DD for min date
   const today = new Date().toISOString().split('T')[0]
@@ -107,7 +160,7 @@ function Booking() {
           </div>
 
           <button
-            onClick={() => { setSubmitted(false); setStep(0); setForm({ service: '', stylist: 'No preference', date: '', time: '', name: '', phone: '', email: '', notes: '' }) }}
+            onClick={reset}
             className="mt-6 rounded-full border border-gray-200 px-6 py-3 text-sm text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-colors"
           >
             Book another appointment
@@ -398,6 +451,7 @@ function Booking() {
           {step > 0 ? (
             <button
               onClick={back}
+              disabled={loading}
               className="rounded-full border border-gray-200 px-6 py-3 text-sm text-gray-600 hover:border-gray-900 hover:text-gray-900 transition-colors"
             >
               ← Back
@@ -416,6 +470,7 @@ function Booking() {
           ) : (
             <button
               onClick={submit}
+              disabled={loading}
               className="rounded-full bg-pink-600 px-8 py-3 text-sm font-medium text-white hover:bg-pink-700 transition-colors"
             >
               Confirm Booking
